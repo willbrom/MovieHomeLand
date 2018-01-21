@@ -6,7 +6,7 @@ public class MoviePopularModel {
     private int page;
     private int totalResults;
     private int totalPages;
-    private List<MovieResults> movieResults;
+    private List<MovieResults> results;
 
     public int getPage() {
         return page;
@@ -20,7 +20,7 @@ public class MoviePopularModel {
         return totalPages;
     }
 
-    public List<MovieResults> getMovieResults() {
-        return movieResults;
+    public List<MovieResults> getResults() {
+        return results;
     }
 }
