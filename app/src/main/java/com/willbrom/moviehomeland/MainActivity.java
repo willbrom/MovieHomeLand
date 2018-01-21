@@ -8,10 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.willbrom.moviehomeland.adapters.MovieListAdapter;
+import com.willbrom.moviehomeland.models.MoviePopularModel;
 import com.willbrom.moviehomeland.utilities.NetworkUtils;
 
 import java.net.URL;
@@ -27,8 +31,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     private Unbinder unbinder;
+    private MoviePopularModel moviePopularModel;
     private static final int LOADER_NUM = 11;
     private static final String LOADER_EXTRA = "loader_extra";
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private MovieListAdapter movieAdapter = new MovieListAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         unbinder = ButterKnife.bind(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         movieRecyclerView.setLayoutManager(gridLayoutManager);
-        MovieListAdapter movieAdapter = new MovieListAdapter();
         movieRecyclerView.setAdapter(movieAdapter);
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader<String> loader = loaderManager.getLoader(LOADER_NUM);
@@ -94,7 +100,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-
+        progressBar.setVisibility(View.INVISIBLE);
+        if (data != null) {
+            moviePopularModel = new Gson().fromJson(data, new TypeToken<MoviePopularModel>(){}.getType());
+            movieAdapter.setMoviePopularModel(moviePopularModel);
+        } else {
+            Log.d(TAG, "data is null");
+        }
     }
 
     @Override
