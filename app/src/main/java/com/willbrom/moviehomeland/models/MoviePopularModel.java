@@ -1,26 +1,27 @@
 package com.willbrom.moviehomeland.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MoviePopularModel {
+public class MoviePopularModel implements Serializable {
     private int page;
-    private int totalResults;
-    private int totalPages;
-    private List<MovieResults> results;
+    private int total_results;
+    private int total_pages;
+    private List<MovieResultsModel> results;
 
     public int getPage() {
         return page;
     }
 
-    public int getTotalResults() {
-        return totalResults;
+    public int getTotal_results() {
+        return total_results;
     }
 
-    public int getTotalPages() {
-        return totalPages;
+    public int getTotal_pages() {
+        return total_pages;
     }
 
-    public List<MovieResults> getResults() {
+    public List<MovieResultsModel> getResults() {
         return results;
     }
 }

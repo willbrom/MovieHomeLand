@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/MovieHomeLand.iml" filepath="$PROJECT_DIR$/.idea/MovieHomeLand.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MovieHomeLand.iml" filepath="$PROJECT_DIR$/MovieHomeLand.iml" />
+      <module fileurl="file://C:\Users\user\AndroidStudioProjects\MovieHomeLand\.idea\MovieHomeLand.iml" filepath="C:\Users\user\AndroidStudioProjects\MovieHomeLand\.idea\MovieHomeLand.iml" />
       <module fileurl="file://C:\Users\TOSHIBA\AndroidStudioProjects\MovieHomeLand\MovieHomeLand.iml" filepath="C:\Users\TOSHIBA\AndroidStudioProjects\MovieHomeLand\MovieHomeLand.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\Users\TOSHIBA\AndroidStudioProjects\MovieHomeLand\app\app.iml" filepath="C:\Users\TOSHIBA\AndroidStudioProjects\MovieHomeLand\app\app.iml" />

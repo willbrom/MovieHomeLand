@@ -14,12 +14,26 @@ import java.util.Scanner;
 
 public class NetworkUtils {
     private static final String BASE_URL_MOVIES = "https://api.themoviedb.org/3/movie/";
+    private static final String BASE_URL_POSTERS = "https://image.tmdb.org/t/p/w185/";
     private static final String API_KEY_VALUE = BuildConfig.THE_MOVIE_DB_API_KEY;
+    private static Uri movieUri;
 
     public static URL getMovieUrl(String orderBy, String page) {
-        Uri movieUri = Uri.parse(BASE_URL_MOVIES + orderBy).buildUpon()
+        movieUri = Uri.parse(BASE_URL_MOVIES + orderBy).buildUpon()
                 .appendQueryParameter("api_key", API_KEY_VALUE)
                 .appendQueryParameter("page", page)
+                .build();
+        URL movieUrl = null;
+        try {
+            movieUrl = new URL(movieUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return movieUrl;
+    }
+
+    public static URL getMoviePosterUrl(String posterPath) {
+        movieUri = Uri.parse(BASE_URL_POSTERS + posterPath).buildUpon()
                 .build();
         URL movieUrl = null;
         try {

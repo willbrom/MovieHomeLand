@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, MovieListAdapter.OnLoadMoreListener {
 
     @BindView(R.id.movie_recyclerView)
     RecyclerView movieRecyclerView;
@@ -35,7 +36,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int LOADER_NUM = 11;
     private static final String LOADER_EXTRA = "loader_extra";
     private static final String TAG = MainActivity.class.getSimpleName();
-    private MovieListAdapter movieAdapter = new MovieListAdapter();
+    private MovieListAdapter movieAdapter;
+    private Bundle loaderBundle;
+    private URL movieUrl;
+    private int pageNum = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +49,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         unbinder = ButterKnife.bind(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         movieRecyclerView.setLayoutManager(gridLayoutManager);
+        movieAdapter = new MovieListAdapter(this);
         movieRecyclerView.setAdapter(movieAdapter);
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader<String> loader = loaderManager.getLoader(LOADER_NUM);
-        Bundle loaderBundle = new Bundle();
-        URL movieUrl = NetworkUtils.getMovieUrl("popular", "1");
+        loaderBundle = new Bundle();
+        movieUrl = NetworkUtils.getMovieUrl("popular", String.valueOf(pageNum));
         loaderBundle.putString(LOADER_EXTRA, movieUrl.toString());
 
         if (savedInstanceState == null) {
@@ -103,7 +108,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         progressBar.setVisibility(View.INVISIBLE);
         if (data != null) {
             moviePopularModel = new Gson().fromJson(data, new TypeToken<MoviePopularModel>(){}.getType());
-            movieAdapter.setMoviePopularModel(moviePopularModel);
+            Log.d(TAG, "Page num: " + moviePopularModel.getPage());
+            movieAdapter.setMovieResultModels(moviePopularModel.getResults());
         } else {
             Log.d(TAG, "data is null");
         }
@@ -111,6 +117,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<String> loader) {}
+
+    @Override
+    public void onLoadMore() {
+        pageNum++;
+        loaderBundle = new Bundle();
+        movieUrl = NetworkUtils.getMovieUrl("popular", String.valueOf(pageNum));
+        loaderBundle.putString(LOADER_EXTRA, movieUrl.toString());
+        getSupportLoaderManager().restartLoader(LOADER_NUM, loaderBundle, MainActivity.this);
+
+    }
 
     @Override
     protected void onDestroy() {
